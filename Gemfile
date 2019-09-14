@@ -21,6 +21,7 @@ gem 'puma', '~> 3.11'
 gem 'active_model_serializers'
 gem 'rspec-rails'
 gem 'factory_bot_rails'
+gem 'kaminari'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
