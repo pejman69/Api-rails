@@ -12,4 +12,5 @@ class ApplicationController < ActionController::API
 			    }	
 		render json: {"errors": [error]}, status: 401
   end
+  
 end
