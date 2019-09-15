@@ -32,7 +32,7 @@ describe UserAuthenticator do
 			  }
 			end
 			before do 
-				allow_any_instance_of(Octokit::Client).to receive(:exchange_code_for_token).and_return('validaccesstoken')
+			  allow_any_instance_of(Octokit::Client).to receive(:exchange_code_for_token).and_return('validaccesstoken')
 			  allow_any_instance_of(Octokit::Client).to receive(:user).and_return(user_data)
 			end 
 
