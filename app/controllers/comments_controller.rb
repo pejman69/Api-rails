@@ -1,11 +1,12 @@
 class CommentsController < ApplicationController
 skip_before_action :authorize!, Only: [:index]
-before_action :load_article, Only: [:create]
+before_action :load_article
   # GET /comments
   def index
-    @comments = Comment.all
-
-    render json: @comments
+    @comments = @article.comments
+      page(params[:page]).
+      per(params[:per_page])
+    render json: comments
   end
 
   # POST /comments
