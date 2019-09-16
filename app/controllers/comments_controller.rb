@@ -13,11 +13,12 @@ before_action :load_article
   def create
     @comment = @article.comments.build(comment_params.merge(user: current_user))
 
-    if @comment.save
+    @comment.save
       render json: @comment, status: :created, location: @article
-    else
-      render json: @comment.errors, status: :unprocessable_entity
-    end
+   rescue
+      render json: @comment, adapter: :json_api, 
+      seriallizer: ErrorSerializer,
+      status: :unprocessable_entity
   end
 
 
@@ -28,6 +29,8 @@ before_action :load_article
 
     # Only allow a trusted parameter "white list" through.
     def comment_params
-      params.require(:comment).permit(:content, :article_id)
+      params.require(:data).require(attributes).
+      permit(:content) ||
+      ActionController::Parameters.new
     end
   end
