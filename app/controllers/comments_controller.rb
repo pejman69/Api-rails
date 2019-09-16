@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
 skip_before_action :authorize!, Only: [:index]
-
+before_action :load_article, Only: [:create]
   # GET /comments
   def index
     @comments = Comment.all
@@ -10,10 +10,10 @@ skip_before_action :authorize!, Only: [:index]
 
   # POST /comments
   def create
-    @comment = Comment.new(comment_params)
+    @comment = @article.comments.build(comment_params.merge(user: current_user))
 
     if @comment.save
-      render json: @comment, status: :created, location: @comment
+      render json: @comment, status: :created, location: @article
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
@@ -21,9 +21,12 @@ skip_before_action :authorize!, Only: [:index]
 
 
   private
+  def load_article
+    @article = Article.find(params[:article_id])
+  end
 
     # Only allow a trusted parameter "white list" through.
     def comment_params
-      params.require(:comment).permit(:content, :article_id, :user_id)
+      params.require(:comment).permit(:content, :article_id)
     end
   end
