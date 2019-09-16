@@ -3,8 +3,8 @@ class ArticlesController < ApplicationController
 	
 	def index
 		articles = Article.recent.
-		page(params[:page]).
-		per(params[:per_page])
+		  page(params[:page]).
+		  per(params[:per_page])
 		render json: articles
 	end
 
@@ -32,6 +32,14 @@ class ArticlesController < ApplicationController
       render json: article, adapter: :json_api,
       serializer: ErrorSerializer,
       status: :unprocessable_entity
+  end
+
+   def destroy
+    article = current_user.articles.find(params[:id])
+    article.destroy
+    head :no_content
+  rescue
+    authorization_error
   end
 
   private
