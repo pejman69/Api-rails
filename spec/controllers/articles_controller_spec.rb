@@ -106,5 +106,8 @@ describe ArticlesController do
           )
         end
       end
+      content 'when  success request sent' do
+        
+      end
   end
 end

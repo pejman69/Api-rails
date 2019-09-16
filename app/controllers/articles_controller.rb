@@ -21,4 +21,12 @@ class ArticlesController < ApplicationController
 	      serializer: ErrorSerializer,
 	      status: :unprocessable_entity
 	  end
+
+  private
+
+  def article_params
+    params.require(:data).require(:attributes).
+      permit(:title, :content, :slug) ||
+    ActionController::Parameters.new
+  end
 end
