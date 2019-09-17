@@ -1,51 +1,61 @@
 class ApplicationController < ActionController::API
-	
-	
-	rescue_from UserAuthenticator::Oauth::AuthenticationError, with: :authentication_oauth_error
-	rescue_from UserAuthenticator::Standard::AuthenticationError, with: :authentication_standard_error
-	rescue_from AuthorizationError, with: :authorization_error
-  
+  class AuthorizationError < StandardError; end
+
+  rescue_from UserAuthenticator::Oauth::AuthenticationError, with: :authentication_oauth_error
+  rescue_from UserAuthenticator::Standard::AuthenticationError, with: :authentication_standard_error
+  rescue_from AuthorizationError, with: :authorization_error
 
   before_action :authorize!
-  
+
   private
 
+  def current_page
+    return 1 unless params[:page]
+    return params[:page] if params[:page].is_a?(String)
+    params.dig(:page, :number) if params[:page].is_a?(Hash)
+  end
 
-    def authorize!
-      raise AuthorizationError unless current_user
-    end
+  def per_page
+    return unless params[:page]
+    return params[:per_page] if params[:per_page].is_a?(String)
+    params.dig(:page, :size) if params[:page].is_a?(Hash)
+  end
 
-	  def access_token
-		  provided_token = request.authorization&.gsub(/\ABearer\s/, '')
-	    @access_token = AccessToken.find_by(token: provided_token)
-	    
-	  end
 
-	  def current_user
-		 @current_user = access_token&.user
-	  end
+  def authorize!
+    raise AuthorizationError unless current_user
+  end
 
-	  def authentication_oauth_error
-	  			error = {
-				      "status" => "401",
-				      "source" => {"pointer"=>  "/code"},
-				      "title" => "Authentication code is invalid",
-				      "detail" => "You must provide valid code in order to exchange it for token."
-				    }	
-			render json: {"errors": [error]}, status: 401
-	  end
+  def access_token
+    provided_token = request.authorization&.gsub(/\ABearer\s/, '')
+    @access_token = AccessToken.find_by(token: provided_token)
+  end
 
-	  	  def authentication_standard_error
-	  			error =  {
-					      "status" => "401",
-					      "source" => { "pointer" => "/data/attributes/password" },
-					      "title" =>  "Invalid login or password",
-					      "detail" => "You must provide valid credentials in order to exchange them for token."
-					    }	
-			render json: {"errors": [error]}, status: 401
-	  end
+  def current_user
+    @current_user = access_token&.user
+  end
 
-    def authorization_error
+  def authentication_oauth_error
+    error = {
+      "status" => "401",
+      "source" => { "pointer" => "/code" },
+      "title" =>  "Authentication code is invalid",
+      "detail" => "You must provide valid code in order to exchange it for token."
+    }
+    render json: { "errors": [ error ] }, status: 401
+  end
+
+  def authentication_standard_error
+    error = {
+      "status" => "401",
+      "source" => { "pointer" => "/data/attributes/password" },
+      "title" =>  "Invalid login or password",
+      "detail" => "You must provide valid credentials in order to exchange them for token."
+    }
+    render json: { "errors": [ error ] }, status: 401
+  end
+
+  def authorization_error
     error = {
       "status" => "403",
       "source" => { "pointer" => "/headers/authorization" },
