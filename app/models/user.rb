@@ -2,7 +2,7 @@ class User < ApplicationRecord
   include BCrypt
   validates :login, presence: true, uniqueness: true
   validates :provider, presence: true
-  
+  validates :password, presence: true, if: -> { provider == 'standard' }
 
   has_one :access_token, dependent: :destroy
   has_many :articles, dependent: :destroy
