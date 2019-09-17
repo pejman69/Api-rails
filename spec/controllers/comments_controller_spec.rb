@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe CommentsController, type: :controller do
   let(:article) { create :article }
 
@@ -46,7 +45,7 @@ RSpec.describe CommentsController, type: :controller do
     end
   end
 
- describe "POST #create" do
+  describe "POST #create" do
     context 'when not authorized' do
       subject { post :create, params: { article_id: article.id } }
 
@@ -106,5 +105,6 @@ RSpec.describe CommentsController, type: :controller do
         end
       end
     end
+
   end
 end
