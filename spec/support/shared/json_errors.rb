@@ -1,4 +1,5 @@
 require 'rails_helper'
+
 shared_examples_for "unauthorized_standard_requests" do
   let(:authentication_error) do
     {
