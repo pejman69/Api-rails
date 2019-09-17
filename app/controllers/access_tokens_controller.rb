@@ -16,6 +16,10 @@ skip_before_action :authorize!, only: :create
 	private
 
 	def authentication_params
-		params.permit(:code).to_h_symbolize_keys
+		(standard_auth_params || params.permit(:code)).to_h_symbolize_keys
+	end
+
+	def standard_auth_params
+		params.dig(:data, :attributes)&.permit(:login, :password)
 	end
 end
