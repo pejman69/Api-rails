@@ -1,11 +1,11 @@
 class UserAuthenticator
    attr_reader :authenticator
 
-	def initialize(code: nil)
+	def initialize(code: nil, login: nil, password: nil)
 		@authenticator = if code.present?
 			Oauth.new(code)
 		else
-			@authenticator = Standard.new(login: nil, password: nil)
+			@authenticator = Standard.new(login, password)
 		end
 	end
 
