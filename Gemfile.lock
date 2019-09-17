@@ -50,6 +50,7 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
+    bcrypt (3.1.13)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -174,6 +175,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sqlite3 (1.4.1)
     thor (0.20.3)
     thread_safe (0.3.6)
     tzinfo (1.2.5)
@@ -187,6 +189,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  bcrypt
   bootsnap (>= 1.1.0)
   byebug
   factory_bot_rails
@@ -199,6 +202,7 @@ DEPENDENCIES
   rspec-rails
   spring
   spring-watcher-listen (~> 2.0.0)
+  sqlite3
   tzinfo-data
 
 RUBY VERSION

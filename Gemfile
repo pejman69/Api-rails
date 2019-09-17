@@ -24,6 +24,7 @@ gem 'rspec-rails'
 gem 'factory_bot_rails'
 gem 'kaminari'
 gem "octokit", "~> 4.0"
+gem 'bcrypt'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

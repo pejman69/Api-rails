@@ -24,6 +24,12 @@ describe UserAuthenticator do
 				authenticator
 			end
 		end
+			it 'should create and set user access token' do
+				expect(authenticator.authenticator).to receive(:perform).and_return(true)
+				expect(authenticator.authenticator).to receive(:user).
+				expect { subject }.to change{ AccessToken.count }.by(1)
+				expect(authenticator.access_token).to be_present
+			end
+    end
 	end
-	
 end
